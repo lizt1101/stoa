@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shutian.oa.modules.oa.dao.OaCostReimDetailedDao">
+    
+	<sql id="oaCostReimDetailedColumns">
+		a.id AS "id",
+		a.reim_id AS "reimId",
+		a.summary AS "summary",
+		a.project AS "project",
+		a.money AS "money",
+		a.bill_count AS "billCount",
+		a.remarks AS "remarks",
+		a.is_delete AS "isDelete"
+	</sql>
+	
+	<sql id="oaCostReimDetailedJoins">
+	</sql>
+    
+	<select id="get" resultType="OaCostReimDetailed">
+		SELECT 
+			<include refid="oaCostReimDetailedColumns"/>
+		FROM oa_cost_reim_detailed a
+		<include refid="oaCostReimDetailedJoins"/>
+		WHERE a.id = #{id} and a.is_delete = 0
+	</select>
+
+	<select id="getByReimId" resultType="OaCostReimDetailed">
+		SELECT
+		<include refid="oaCostReimDetailedColumns"/>
+		FROM oa_cost_reim_detailed a
+		<include refid="oaCostReimDetailedJoins"/>
+		WHERE a.reim_id = #{reimId} and a.is_delete = 0
+	</select>
+	
+	<select id="findList" resultType="OaCostReimDetailed">
+		SELECT 
+			<include refid="oaCostReimDetailedColumns"/>
+		FROM oa_cost_reim_detailed a
+		<include refid="oaCostReimDetailedJoins"/>
+		<where>
+			a.is_delete = 0
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OaCostReimDetailed">
+		SELECT 
+			<include refid="oaCostReimDetailedColumns"/>
+		FROM oa_cost_reim_detailed a
+		<include refid="oaCostReimDetailedJoins"/>
+		<where>
+			a.is_delete = 0
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_cost_reim_detailed(
+			id,
+			reim_id,
+			summary,
+			project,
+			money,
+			bill_count,
+			remarks,
+			is_delete
+		) VALUES (
+			#{id},
+			#{reimId},
+			#{summary},
+			#{project},
+			#{money},
+			#{billCount},
+			#{remarks},
+			#{isDelete}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_cost_reim_detailed SET 	
+			reim_id = #{reimId},
+			summary = #{summary},
+			project = #{project},
+			money = #{money},
+			bill_count = #{billCount},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		update oa_cost_reim_detailed SET is_delete = 1
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

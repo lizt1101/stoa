@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shutian.oa.modules.oa.dao.OaOpinionDao">
+    
+	<sql id="oaOpinionColumns">
+		a.id AS "id",
+		a.business_table AS "businessTable",
+		a.bussiness_id AS "bussinessId",
+		a.user_name AS "userName",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.content AS "content",
+		a.position AS "position",
+		a.level AS "level"
+	</sql>
+	
+	<sql id="oaOpinionJoins">
+	</sql>
+
+	<select id="getByBussIdAndLevel" resultType="OaOpinion">
+		select <include refid="oaOpinionColumns"/>
+		FROM oa_opinion a
+		where a.bussiness_id = #{bussinessId} and a.level = #{level}
+	</select>
+
+	<select id="getCommentListByBussinessId" resultType="OaOpinion">
+		select <include refid="oaOpinionColumns"/>
+		FROM oa_opinion a
+		where a.bussiness_id = #{bussinessId}
+		order by a.level ASC
+	</select>
+
+	<select id="get" resultType="OaOpinion">
+		SELECT 
+			<include refid="oaOpinionColumns"/>
+		FROM oa_opinion a
+		<include refid="oaOpinionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OaOpinion">
+		SELECT 
+			<include refid="oaOpinionColumns"/>
+		FROM oa_opinion a
+		<include refid="oaOpinionJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OaOpinion">
+		SELECT 
+			<include refid="oaOpinionColumns"/>
+		FROM oa_opinion a
+		<include refid="oaOpinionJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_opinion(
+			id,
+			business_table,
+			bussiness_id,
+			user_name,
+			create_by,
+			create_date,
+			content,
+			position,
+			level
+		) VALUES (
+			#{id},
+			#{businessTable},
+			#{bussinessId},
+			#{userName},
+			#{createBy.id},
+			#{createDate},
+			#{content},
+			#{position},
+			#{level}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_opinion SET 	
+			business_table = #{businessTable},
+			bussiness_id = #{bussinessId},
+			user_name = #{userName},
+			content = #{content},
+			position = #{position},
+			level = #{level}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM oa_opinion
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

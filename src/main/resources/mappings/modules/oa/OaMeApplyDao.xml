@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shutian.oa.modules.oa.dao.OaMeApplyDao">
+    
+	<sql id="oaMeApplyColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.name AS "name",
+		a.proc_ins_id As "procInsId",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id",
+		a.del_flag AS "delFlag",
+		u2.name AS "user.name",
+		a.status As "status"
+	</sql>
+	
+	<sql id="oaMeApplyJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="OaMeApply">
+		SELECT 
+			<include refid="oaMeApplyColumns"/>
+		FROM oa_me_apply a
+		<include refid="oaMeApplyJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OaMeApply">
+		SELECT 
+			<include refid="oaMeApplyColumns"/>
+		FROM oa_me_apply a
+		<include refid="oaMeApplyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="beginCreateDate != null and endCreateDate != null and beginCreateDate != '' and endCreateDate != ''">
+				AND a.create_date BETWEEN #{beginCreateDate} AND #{endCreateDate}
+			</if>
+			<if test="user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OaMeApply">
+		SELECT 
+			<include refid="oaMeApplyColumns"/>
+		FROM oa_me_apply a
+		<include refid="oaMeApplyJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_me_apply(
+			id,
+			user_id,
+			name,
+			proc_ins_id,
+			create_date,
+			create_by,
+			update_date,
+			update_by,
+			del_flag,
+			status
+		) VALUES (
+			#{id},
+			#{user.id},
+			#{name},
+			#{procInsId},
+			#{createDate},
+			#{createBy.id},
+			#{updateDate},
+			#{updateBy.id},
+			#{delFlag},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_me_apply SET 	
+			user_id = #{user.id},
+			name = #{name},
+			proc_ins_id = #{procInsId},
+			update_date = #{updateDate},
+			update_by = #{updateBy.id}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE oa_me_apply SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateStatus">
+		UPDATE oa_me_apply SET
+			status = #{status}
+		WHERE proc_ins_id = #{procInsId}
+	</update>
+	
+</mapper>

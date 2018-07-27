@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shutian.oa.modules.oa.dao.OaCostReimbursementDao">
+    
+	<sql id="oaCostReimbursementColumns">
+		a.id AS "id",
+		a.reim_name AS "user.name",
+		a.reim_department AS "office.id",
+		a.proc_ins_id AS "procInsId",
+		a.reim_id AS "user.id",
+		a.reim_position AS "reimPosition",
+		a.number AS "number",
+		a.total_money AS "totalMoney",
+		a.total_big_money AS "totalBigMoney",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.status AS "status",
+		u.name As "office.name"
+	</sql>
+	
+	<sql id="oaCostReimbursementJoins">
+		LEFT join sys_office u ON u.id = a.reim_department
+	</sql>
+    
+	<select id="get" resultType="OaCostReimbursement">
+		SELECT 
+			<include refid="oaCostReimbursementColumns"/>
+		FROM oa_cost_reimbursement a
+		<include refid="oaCostReimbursementJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="OaCostReimbursement">
+		SELECT 
+			<include refid="oaCostReimbursementColumns"/>
+		FROM oa_cost_reimbursement a
+		<include refid="oaCostReimbursementJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="OaCostReimbursement">
+		SELECT 
+			<include refid="oaCostReimbursementColumns"/>
+		FROM oa_cost_reimbursement a
+		<include refid="oaCostReimbursementJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO oa_cost_reimbursement(
+			id,
+			reim_name,
+			reim_department,
+			reim_id,
+			reim_position,
+			number,
+			proc_ins_id,
+			total_money,
+			total_big_money,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			status
+		) VALUES (
+			#{id},
+			#{user.name},
+			#{office.id},
+			#{user.id},
+			#{reimPosition},
+			#{number},
+			#{procInsId},
+			#{totalMoney},
+			#{totalBigMoney},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE oa_cost_reimbursement SET 	
+			reim_name = #{user.name},
+			reim_department = #{office.id},
+			reim_id = #{user.id},
+			reim_position = #{reimPosition},
+			number = #{number},
+			total_money = #{totalMoney},
+			total_big_money = #{totalBigMoney},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateStatus">
+		UPDATE oa_cost_reimbursement SET
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE oa_cost_reimbursement SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
