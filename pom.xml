@@ -897,6 +897,34 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<version>2.10</version>
 			</plugin>
+
+			<!-- 利用cargo插件把项目部署到远程的tomcat容器中 -->
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.2.3</version>
+				<configuration>
+					<container>
+						<!-- 指明使用的tomcat服务器版本 -->
+						<containerId>tomcat8x</containerId>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<type>runtime</type>
+						<cargo.remote.username>admin</cargo.remote.username>
+						<cargo.remote.password>admin</cargo.remote.password>
+						<cargo.tomcat.manager.url>http://172.16.17.180:9999/stoa</cargo.tomcat.manager.url>
+					</configuration>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>redeploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 	
@@ -980,11 +1008,10 @@
 	</profiles>-->
 	
 	<!-- 开发者信息 -->
-	<developers>  
+	<developers>
 		<developer>
-			<id>thinkgem</id>
-			<name>WangZhen</name>
-			<email>thinkgem at 163.com</email>
+			<id>ynstt</id>
+			<name>shutian</name>
 			<roles><role>Project lead</role></roles>
 			<timezone>+8</timezone>
 		</developer>
