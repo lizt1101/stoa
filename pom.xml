@@ -913,7 +913,7 @@
 						<type>runtime</type>
 						<cargo.remote.username>admin</cargo.remote.username>
 						<cargo.remote.password>admin</cargo.remote.password>
-						<cargo.tomcat.manager.url>http://172.16.17.180:9999/stoa</cargo.tomcat.manager.url>
+						<cargo.tomcat.manager.url>http://172.16.17.180:9900/stoa</cargo.tomcat.manager.url>
 					</configuration>
 				</configuration>
 				<executions>
