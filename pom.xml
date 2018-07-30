@@ -9,7 +9,7 @@
 	<packaging>war</packaging>
 	
 	<name>stoa</name>
-	<url>http://thinkgem.github.com/jeesite</url>
+	<url>http://172.31.60.180/stoa/</url>
 	<inceptionYear>2012-2016</inceptionYear>
 	
 	<!-- 项目属性 -->
@@ -61,8 +61,8 @@
 	<repositories>
 	
 		<repository>
-			<id>jeesite-repos</id>
-			<name>Jeesite Repository</name>
+			<id>stoa-repos</id>
+			<name>stoa Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</repository>
 		
@@ -72,8 +72,8 @@
 	<pluginRepositories> 
 	
 		<pluginRepository>
-			<id>jeesite-repos</id>
-			<name>Jeesite Repository</name>
+			<id>stoa-repos</id>
+			<name>stoa Repository</name>
 			<url>http://maven.aliyun.com/nexus/content/groups/public</url>
 		</pluginRepository>
 		
