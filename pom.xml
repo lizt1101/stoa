@@ -51,7 +51,7 @@
 		<jdk.version>1.8</jdk.version>
 		<tomcat.version>2.2</tomcat.version>
 		<jetty.version>7.6.14.v20131031</jetty.version>
-		<webserver.port>9999</webserver.port>
+		<webserver.port>9900</webserver.port>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<downloadSources>true</downloadSources>
 		
